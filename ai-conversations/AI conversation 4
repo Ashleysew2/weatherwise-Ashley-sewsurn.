@@ -1,0 +1,87 @@
+Tool: Chatgpt
+me: Can you help me split my code into functions?
+AI: Absolutely! Splitting your code into functions—also called modularisation—is a core requirement of your Weather Advisor project. It makes your code easier to read, test, and debug.
+
+Here’s how you can break your code into logical, reusable functions, aligned with your assignment requirements.
+
+🧩 Required Core Functions
+You're expected to define and use these functions:
+
+1. get_weather_data(location, forecast_days=5)
+Purpose: Fetch current and forecast weather for a given location.
+
+Inputs: Location (string), forecast_days (default 5)
+
+Returns: A dictionary containing weather data
+
+python
+Copy
+Edit
+def get_weather_data(location, forecast_days=5):
+    # API request here using requests
+    # Process and return the weather JSON as a dictionary
+    pass
+2. parse_weather_question(question)
+Purpose: Take a natural language question and extract key parts (location, date, attribute).
+
+Returns: A dictionary like:
+
+python
+Copy
+Edit
+{
+    "location": "Melbourne",
+    "date": "tomorrow",
+    "attribute": "temperature"
+}
+3. generate_weather_response(parsed_question, weather_data)
+Purpose: Given a parsed question and data, return a natural-language answer.
+
+Returns: String response to user
+
+4. create_temperature_visualisation(weather_data, output_type='display')
+Purpose: Plot temperature trends from weather data using matplotlib or seaborn.
+
+5. create_precipitation_visualisation(weather_data, output_type='display')
+Purpose: Plot precipitation probabilities or rainfall amounts.
+
+6. main_menu() (optional for console UI)
+Purpose: Show a user-friendly menu using pyinputplus or plain input()
+
+Calls other functions based on user selections.
+
+✅ Example of How to Use Them Together
+python
+Copy
+Edit
+def main():
+    print("Welcome to the Weather Advisor!")
+    user_question = input("Ask a weather-related question: ")
+
+    parsed = parse_weather_question(user_question)
+    data = get_weather_data(parsed["location"])
+    response = generate_weather_response(parsed, data)
+
+    print(response)
+
+    # Optional visualisations
+    create_temperature_visualisation(data)
+    create_precipitation_visualisation(data)
+🛠 Next Steps
+If you share your current code with me, I’ll help you split it into these functions directly. I can also:
+
+Suggest improvements
+
+Add proper docstrings
+
+Clean up duplicated logic
+
+Would you like to paste your code here, or upload a .ipynb file if you're using Google Colab?
+
+
+
+
+
+
+
+
