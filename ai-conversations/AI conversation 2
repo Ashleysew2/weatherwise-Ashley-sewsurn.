@@ -1,0 +1,97 @@
+Tool: Chatgpt 
+me: Can you explain how the API call works?
+Ai: Absolutely! Let's break down how an API call works—especially in the context of retrieving weather data using the wttr.in API, which is one of the easiest to use.
+
+🔍 What Is an API Call?
+An API (Application Programming Interface) allows two software systems to talk to each other. When we make an API call, we send a request to a server and get a response (usually in JSON format).
+
+🌦️ Example: wttr.in Weather API
+Here's a simple call:
+
+perl
+Copy
+Edit
+https://wttr.in/London?format=j1
+This URL:
+
+Requests weather data for London
+
+Asks for the data in JSON format (?format=j1)
+
+🧠 Step-by-Step Breakdown in Python
+1. Import the requests module
+python
+Copy
+Edit
+import requests
+2. Define the location
+python
+Copy
+Edit
+location = "London"
+3. Create the API endpoint
+python
+Copy
+Edit
+url = f"https://wttr.in/{location}?format=j1"
+4. Send the GET request
+python
+Copy
+Edit
+response = requests.get(url)
+5. Check the status and parse the data
+python
+Copy
+Edit
+if response.status_code == 200:
+    data = response.json()  # Parses the response into a Python dictionary
+    print(data)
+else:
+    print(f"Failed to retrieve weather data: {response.status_code}")
+🧾 Sample JSON Output (Simplified)
+json
+Copy
+Edit
+{
+  "current_condition": [
+    {
+      "temp_C": "17",
+      "humidity": "63",
+      "weatherDesc": [{"value": "Partly cloudy"}]
+    }
+  ],
+  "weather": [
+    {
+      "date": "2025-05-23",
+      "maxtempC": "20",
+      "mintempC": "12",
+      "hourly": [
+        {
+          "time": "0",
+          "tempC": "14",
+          "chanceofrain": "20"
+        },
+        ...
+      ]
+    },
+    ...
+  ]
+}
+✅ Summary
+You construct the URL using a base URL and query parameters.
+
+Use requests.get(url) to make the API call.
+
+Use response.json() to parse the JSON response into a Python dictionary.
+
+Then you can extract specific weather info from the dictionary.
+
+Would you like me to help you write a function (get_weather_data(location)) that handles errors and returns clean, useful data for your project?
+
+
+
+
+
+
+
+
