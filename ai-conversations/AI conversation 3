@@ -1,0 +1,80 @@
+Tool: Chatgpt
+me: Can I use natural language to ask about the weather instead of typing a city?
+AI: Yes, you can absolutely use natural language to ask about the weather instead of directly typing a city—that’s one of the key goals of your assignment! The idea is to let the user ask questions like:
+
+“What’s the weather in Melbourne tomorrow?”
+
+“Will it rain in Sydney this weekend?”
+
+“How hot will it be in Perth on Friday?”
+
+To do that, you need to implement natural language processing (NLP) in your app. Specifically, your parse_weather_question(question) function will:
+
+🧠 What You Need to Do
+Take the user's natural language input
+
+E.g., "Will it be sunny in Brisbane tomorrow?"
+
+Parse it into structured data, like:
+
+python
+Copy
+Edit
+{
+    "location": "Brisbane",
+    "date": "tomorrow",
+    "attribute": "sunny"  # or "condition"
+}
+Pass this structured data to your weather-fetching function (get_weather_data(location)), and then…
+
+Generate a response using generate_weather_response(parsed_question, weather_data), e.g.,
+
+“Yes, it is expected to be sunny in Brisbane tomorrow with a high of 23°C.”
+
+🧰 How to Parse Natural Language
+You can use a simple rule-based method (good enough for this project) or a library like spaCy or dateparser.
+
+Example using basic string parsing:
+
+python
+Copy
+Edit
+def parse_weather_question(question):
+    question = question.lower()
+    locations = ["melbourne", "sydney", "brisbane", "perth", "adelaide"]
+    attributes = ["rain", "sunny", "temperature", "wind", "humidity"]
+    dates = {
+        "today": 0,
+        "tomorrow": 1,
+        "this weekend": 2  # you can interpret this however you like
+    }
+
+    location = next((loc for loc in locations if loc in question), None)
+    attribute = next((attr for attr in attributes if attr in question), "condition")
+    time_phrase = next((k for k in dates if k in question), "today")
+
+    return {
+        "location": location,
+        "date": time_phrase,
+        "attribute": attribute
+    }
+✅ Summary
+You’re expected to allow natural-language queries as input. This is done by:
+
+Capturing what the user types,
+
+Parsing their question to extract: location, date/time, weather attribute,
+
+Using those to fetch the right weather data,
+
+And finally generating a human-readable answer.
+
+Would you like help writing a better parse_weather_question() function or improving the responses?
+
+
+
+
+
+
+
+
