@@ -1,0 +1,72 @@
+Tool: Chatgpt
+Me: My code gives an error — can you help me fix it?
+AI: I'd be happy to help fix the error in your code! Please do one of the following:
+
+Paste the error message you're getting, along with the relevant section of your code, or
+
+Upload your .ipynb or .py file if you're working in Google Colab or a Python IDE.
+
+Once I see the error and code, I’ll explain what’s going wrong and how to fix it.
+ME: ❌ Error: Unable to fetch data for 'Atlantizz'. Reason: city not found
+AI:🧪 Sample Code Snippet with Error Handling:
+python
+Copy
+Edit
+import requests
+
+API_KEY = "your_api_key_here"  # Replace this with your real API key
+BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
+
+def get_weather(city):
+    params = {
+        "q": city,
+        "appid": API_KEY,
+        "units": "metric"
+    }
+    
+    response = requests.get(BASE_URL, params=params)
+    
+    if response.status_code == 200:
+        data = response.json()
+        print(f"Weather in {city}: {data['weather'][0]['description'].capitalize()}")
+        print(f"Temperature: {data['main']['temp']}°C")
+    else:
+        print(f"❌ Error: Unable to fetch data for '{city}'. Reason: {response.json().get('message')}")
+
+# Simulate error
+get_weather("Atlantizz")
+💡 Output:
+text
+Copy
+Edit
+❌ Error: Unable to fetch data for 'Atlantizz'. Reason: city not found
+🧠 Explanation:
+The API will return a 404 status code when the city is not found.
+
+We extract the "message" field from the error response and show it to the user.
+
+✅ What You Learn from This:
+How to handle API errors gracefully.
+
+How to show clear feedback to the user instead of crashing.
+
+How to debug when users give bad input (typos, etc.).
+
+Would you like to:
+
+Add this to your real project?
+
+Try simulating a different type of error (like invalid API key)?
+
+Learn how to create a “retry” feature if the API fails?
+
+Let me know!
+
+
+
+
+
+
+
+
+
