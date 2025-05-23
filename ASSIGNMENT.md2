@@ -1,0 +1,41 @@
+# Assignment: WeatherWise – Intelligent Weather Analysis & Advisory System
+
+## Objective
+
+Develop a Python-based interactive weather advisory system using data from the OpenWeatherMap API. The system should:
+- Retrieve weather forecasts for a given city.
+- Visualize key weather parameters.
+- Allow users to ask natural language questions and receive intelligent answers powered by AI.
+- Be cleanly coded, modular, and documented.
+- Be submitted as a GitHub repository with all required files.
+
+## Key Features Required
+
+1. **Data Retrieval**
+   - Use the OpenWeatherMap API to fetch weather forecasts (at least 3-5 days).
+   - Handle API errors gracefully.
+
+2. **Visualization**
+   - Create charts showing temperature, humidity, etc., using matplotlib.
+
+3. **Natural Language Interaction**
+   - Allow users to ask questions about the forecast (e.g., "Will it rain this weekend?").
+   - Provide intelligent responses based on the weather data.
+
+4. **Coding Best Practices**
+   - Use modular programming (separate functions).
+   - Include meaningful comments and a clean structure.
+   - Submit a clean `.ipynb` notebook.
+
+5. **GitHub Repository Requirements**
+   - `README.md`: Overview of the project and how to run it.
+   - `requirements.txt`: List of Python dependencies.
+   - `starter_notebook.ipynb`: Your final working notebook.
+   - `ASSIGNMENT.md`: This file.
+   - Optional: `ai-conversations/` folder to log prompt ideas or development conversations.
+
+## Submission Instructions
+
+- Submit your private GitHub repository link via the LMS.
+- Ensure all required files are present.
+- Test that the notebook renders and runs correctly on GitHub.
