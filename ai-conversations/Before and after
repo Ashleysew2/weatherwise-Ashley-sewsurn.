@@ -1,0 +1,344 @@
+This is the before:
+# 🌦️ WeatherWise: Intelligent Weather Analysis & Advisory System
+# Author: [Your Name]
+# Date: [Submission Date]
+# Description: This interactive app fetches and visualizes 5-day weather forecasts using the OpenWeatherMap API,
+# and allows users to ask natural-language weather questions.
+
+# ✅ Package Setup (install if needed)
+!pip install requests
+!pip install matplotlib
+!pip install ipywidgets
+
+# ✅ Imports
+import requests
+import matplotlib.pyplot as plt
+from IPython.display import display
+import ipywidgets as widgets
+
+# ✅ API Configuration
+API_KEY = '590b15e27364a4ffb873274c9e33ab3b'  # Replace with your own if needed
+BASE_URL = 'http://api.openweathermap.org/data/2.5/forecast'
+
+# ✅ Fetch Weather Data
+def get_weather_data(city):
+    """
+    Fetch 5-day weather data for a given city from OpenWeatherMap.
+
+    Args:
+        city (str): City name
+
+    Returns:
+        dict: Parsed JSON data or None if request fails
+    """
+    params = {'q': city, 'appid': API_KEY, 'units': 'metric'}
+    response = requests.get(BASE_URL, params=params)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print("Error fetching weather data:", response.status_code)
+        return None
+
+# ✅ Basic Question Parser
+def parse_weather_question(question):
+    """
+    Extract keywords (temperature, rain, days) from a user question.
+
+    Args:
+        question (str): User input
+
+    Returns:
+        dict: Parsed information
+    """
+    question = question.lower()
+    return {
+        'attribute': 'temperature' if 'temperature' in question else 'rain' if 'rain' in question else 'general',
+        'days': 5  # fixed to 5 days for simplicity
+    }
+
+# ✅ Generate Response
+def generate_weather_response(parsed, weather_data):
+    """
+    Generate a summary based on the weather data and parsed input.
+
+    Args:
+        parsed (dict): Parsed question
+        weather_data (dict): Weather forecast
+
+    Returns:
+        str: Response string
+    """
+    if not weather_data:
+        return "Sorry, no data available."
+
+    city = weather_data['city']['name']
+    forecast = weather_data['list']
+
+    if parsed['attribute'] == 'temperature':
+        temps = [entry['main']['temp'] for entry in forecast]
+        avg_temp = sum(temps) / len(temps)
+        return f"The average temperature in {city} for the next 5 days is {avg_temp:.1f}°C."
+    elif parsed['attribute'] == 'rain':
+        rain_data = [entry.get('rain', {}).get('3h', 0) for entry in forecast]
+        total_rain = sum(rain_data)
+        return f"{city} is expected to receive about {total_rain:.1f} mm of rain over the next 5 days."
+    else:
+        return f"{city} has mixed weather conditions over the next 5 days."
+
+# ✅ Temperature Chart
+def create_temperature_visualisation(weather_data):
+    """
+    Plot temperature over time.
+
+    Args:
+        weather_data (dict): Forecast data
+    """
+    forecast = weather_data['list']
+    temps = [entry['main']['temp'] for entry in forecast]
+    times = [entry['dt_txt'] for entry in forecast]
+
+    plt.figure(figsize=(12, 4))
+    plt.plot(times, temps, marker='o', color='orange')
+    plt.title(f"5-Day Temperature Forecast for {weather_data['city']['name']}")
+    plt.xlabel('Date and Time')
+    plt.ylabel('Temperature (°C)')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.grid(True)
+    plt.show()
+
+# ✅ Precipitation Chart
+def create_precipitation_visualisation(weather_data):
+    """
+    Plot rainfall (if any) over time.
+
+    Args:
+        weather_data (dict): Forecast data
+    """
+    forecast = weather_data['list']
+    rain = [entry.get('rain', {}).get('3h', 0) for entry in forecast]
+    times = [entry['dt_txt'] for entry in forecast]
+
+    plt.figure(figsize=(12, 4))
+    plt.bar(times, rain, color='skyblue')
+    plt.title(f"5-Day Rainfall Forecast for {weather_data['city']['name']}")
+    plt.xlabel('Date and Time')
+    plt.ylabel('Rainfall (mm)')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.grid(True)
+    plt.show()
+
+# ✅ Interactive UI
+def interactive_weather_app():
+    """
+    Launch interactive input fields for city and question.
+    Display results and charts based on input.
+    """
+    location_input = widgets.Text(
+        value='Melbourne',
+        placeholder='Enter city',
+        description='City:',
+        disabled=False
+    )
+
+    question_input = widgets.Text(
+        value='What is the temperature for the next few days?',
+        placeholder='Ask a weather question...',
+        description='Question:',
+        disabled=False
+    )
+
+    output = widgets.Output()
+
+    def on_click(b):
+        output.clear_output()
+        city = location_input.value
+        question = question_input.value
+
+        weather_data = get_weather_data(city)
+        if weather_data:
+            parsed = parse_weather_question(question)
+            response = generate_weather_response(parsed, weather_data)
+
+            with output:
+                print("\n💬 WeatherWise Says:")
+                print(response)
+                create_temperature_visualisation(weather_data)
+                create_precipitation_visualisation(weather_data)
+        else:
+            with output:
+                print("⚠️ Could not retrieve weather data. Please try again.")
+
+    button = widgets.Button(description='Get Forecast', button_style='success')
+    button.on_click(on_click)
+
+    display(location_input, question_input, button, output)
+
+# ✅ Run the app
+interactive_weather_app()
+
+And this is the after 
+
+# WeatherWise: Intelligent Weather Analysis & Advisory System
+# Author: Your Name
+# Description:
+# This program fetches weather data for a given location,
+# visualizes temperature and precipitation forecasts,
+# and allows simple natural language questions about the weather.
+
+import requests
+import matplotlib.pyplot as plt
+
+# ---------------------------
+# Configuration
+# ---------------------------
+API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY'  # Replace with your actual API key
+BASE_URL = "https://api.openweathermap.org/data/2.5/forecast"
+
+# ---------------------------
+# Fetch Weather Data Function
+# ---------------------------
+def get_weather_data(city, days=5):
+    """
+    Fetch weather forecast data for the given city from OpenWeatherMap API.
+    
+    Args:
+        city (str): City name (e.g., "Perth")
+        days (int): Number of days to forecast (up to 5)
+    
+    Returns:
+        dict: Parsed weather forecast data or None if error.
+    """
+    try:
+        params = {
+            "q": city,
+            "appid": API_KEY,
+            "units": "metric",
+            "cnt": days * 8  # API returns data in 3-hour intervals, 8 per day
+        }
+        response = requests.get(BASE_URL, params=params)
+        response.raise_for_status()
+        data = response.json()
+        
+        # Extract daily data (at noon time) for each day
+        daily_data = []
+        for item in data['list']:
+            if "12:00:00" in item['dt_txt']:
+                day_info = {
+                    "date": item['dt_txt'].split()[0],
+                    "temp_min": item['main']['temp_min'],
+                    "temp_max": item['main']['temp_max'],
+                    "description": item['weather'][0]['description'],
+                    "precipitation": item.get('rain', {}).get('3h', 0) + item.get('snow', {}).get('3h', 0)
+                }
+                daily_data.append(day_info)
+        return daily_data
+
+    except Exception as e:
+        print(f"Error fetching weather data: {e}")
+        return None
+
+# ---------------------------
+# Visualization Functions
+# ---------------------------
+def plot_temperature_forecast(daily_data):
+    """
+    Plot temperature forecast (min and max) over days.
+    
+    Args:
+        daily_data (list): List of daily weather dictionaries.
+    """
+    dates = [d['date'] for d in daily_data]
+    temp_mins = [d['temp_min'] for d in daily_data]
+    temp_maxs = [d['temp_max'] for d in daily_data]
+    
+    plt.figure(figsize=(10,5))
+    plt.plot(dates, temp_mins, label='Min Temp (°C)', marker='o')
+    plt.plot(dates, temp_maxs, label='Max Temp (°C)', marker='o')
+    plt.title('Temperature Forecast')
+    plt.xlabel('Date')
+    plt.ylabel('Temperature (°C)')
+    plt.legend()
+    plt.grid(True)
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+
+def plot_precipitation_forecast(daily_data):
+    """
+    Plot precipitation forecast over days.
+    
+    Args:
+        daily_data (list): List of daily weather dictionaries.
+    """
+    dates = [d['date'] for d in daily_data]
+    precipitation = [d['precipitation'] for d in daily_data]
+    
+    plt.figure(figsize=(10,5))
+    plt.bar(dates, precipitation, color='blue')
+    plt.title('Precipitation Forecast (mm)')
+    plt.xlabel('Date')
+    plt.ylabel('Precipitation (mm)')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+
+# ---------------------------
+# Natural Language Weather Response (Simple)
+# ---------------------------
+def generate_simple_weather_response(question, daily_data):
+    """
+    Generate a simple text response based on keywords in the question.
+    
+    Args:
+        question (str): User's weather-related question.
+        daily_data (list): Weather forecast data.
+    
+    Returns:
+        str: Response string.
+    """
+    question = question.lower()
+    
+    if 'temperature' in question or 'hot' in question or 'cold' in question:
+        temps = [f"{day['date']}: {day['temp_min']}°C - {day['temp_max']}°C" for day in daily_data]
+        return "Temperature forecast:\n" + "\n".join(temps)
+    
+    elif 'rain' in question or 'precipitation' in question or 'snow' in question:
+        precips = [f"{day['date']}: {day['precipitation']} mm" for day in daily_data]
+        return "Precipitation forecast:\n" + "\n".join(precips)
+    
+    else:
+        return "Sorry, I can only provide information about temperature or precipitation."
+
+# ---------------------------
+# Main Program
+# ---------------------------
+def main():
+    print("Welcome to WeatherWise – Your Weather Advisor")
+    city = input("Enter a city name (e.g., Perth): ")
+    
+    print("\nFetching weather data...\n")
+    weather_data = get_weather_data(city)
+    if not weather_data:
+        print("Failed to retrieve weather data. Please check the city name or API key.")
+        return
+    
+    # Show visualizations
+    plot_temperature_forecast(weather_data)
+    plot_precipitation_forecast(weather_data)
+    
+    # Interactive question answering loop
+    while True:
+        question = input("\nAsk a weather question (or type 'exit' to quit): ")
+        if question.lower() == 'exit':
+            print("Thanks for using WeatherWise! Goodbye.")
+            break
+        
+        answer = generate_simple_weather_response(question, weather_data)
+        print("\n" + answer)
+
+# Run the program
+if __name__ == "__main__":
+    main()
