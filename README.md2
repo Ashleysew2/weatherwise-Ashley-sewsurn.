@@ -1,0 +1,21 @@
+# WeatherWise: Intelligent Weather Analysis & Advisory System
+
+WeatherWise is a Python-based project that retrieves real-time weather data from OpenWeatherMap, visualizes it, and allows users to ask natural language questions about the forecast.
+
+## Features
+- Retrieve 5-day weather forecast for any city
+- Visualize temperature trends using matplotlib
+- Ask questions about the weather via AI prompts
+
+## How to Run
+1. Install the required packages:  
+pip install -r requirements.txt
+
+markdown
+Copy code
+2. Get an API key from [OpenWeatherMap](https://openweathermap.org/) and replace `YOUR_API_KEY` in the code.
+3. Run the notebook or script and follow the on-screen prompts.
+
+## Credits
+- Built with OpenWeatherMap API
+- Python, matplotlib, pyinputplus, and AI integration
